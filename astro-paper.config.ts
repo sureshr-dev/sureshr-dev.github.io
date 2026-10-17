@@ -5,7 +5,7 @@ export default defineAstroPaperConfig({
     url: "https://sureshr-dev.github.io/",
     title: "Suresh Rajendiran",
     description:
-      "Site Reliability Engineer with a habit of learning out loud — notes and write-ups from the journey.",
+      "Site Reliability Engineer. A quiet corner for notes, write-ups, and things I'm figuring out.",
     author: "Suresh Rajendiran",
     profile: "https://sureshr-dev.github.io/",
     ogImage: "default-og.jpg",
