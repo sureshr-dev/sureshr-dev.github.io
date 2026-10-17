@@ -127,6 +127,8 @@ if torch.cuda.is_available():
     print(f"Speedup:    {cpu/gpu:.1f}x")
 ```
 
+(The full script is [here as a GitHub gist](https://gist.github.com/sureshr-dev/a24d45cdf82d8b6da33fef1dd3da8f16) — paste it straight into a Colab cell.)
+
 Two small things in that code are easy to miss but important:
 
 - **The warm-up call.** The first GPU operation pays a one-time setup cost. Run one throwaway multiply before timing, or your numbers are garbage.
