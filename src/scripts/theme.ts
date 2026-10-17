@@ -5,9 +5,8 @@ const DARK = "dark";
 function getPreferredTheme(): string {
   const stored = localStorage.getItem(THEME_KEY);
   if (stored) return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? DARK
-    : LIGHT;
+  // Default to dark mode when the user has not chosen a theme.
+  return DARK;
 }
 
 // Reuse the value already set by the inline FOUC-prevention script if available.
@@ -60,10 +59,12 @@ document.addEventListener("astro:before-swap", event => {
   }
 });
 
-// Sync with OS-level dark/light preference changes.
+// Sync with OS-level dark/light preference changes, but only when the user
+// has not explicitly chosen a theme (otherwise respect their choice).
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches }) => {
+    if (localStorage.getItem(THEME_KEY)) return;
     themeValue = matches ? DARK : LIGHT;
-    persist();
+    reflect();
   });
