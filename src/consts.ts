@@ -3,4 +3,4 @@
 
 export const SITE_TITLE = 'Suresh Rajendiran';
 export const SITE_DESCRIPTION =
-	'Sr. Site Reliability Engineer writing about Kubernetes, observability, and building reliable, scalable platforms.';
+	'Sr. Site Reliability Engineer exploring AI/ML — writing about Kubernetes, observability, reliable platforms, and what I learn along the way.';
