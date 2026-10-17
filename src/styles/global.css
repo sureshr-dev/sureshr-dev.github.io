@@ -11,6 +11,21 @@
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
   }
+  /* Editorial "paper" feel: tight, confident headings (à la fpy.cz) */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.17;
+  }
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+  }
   a,
   button,
   #main-content {

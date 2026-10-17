@@ -45,7 +45,7 @@ const rssHref = getRelativeLocaleUrl(
 
     <!-- Font -->
     <Font
-      cssVariable="--font-google-sans-code"
+      cssVariable="--font-dm-sans"
       preload={[{ subset: "latin", weight: 400, style: "normal" }]}
     />
 
@@ -101,8 +101,8 @@ const rssHref = getRelativeLocaleUrl(
     <script is:inline>
       (function () {
         const stored = localStorage.getItem("theme");
-        // Default to dark mode; users can still toggle and their choice is saved.
-        const theme = stored ?? "dark";
+        // Default to the light "paper" theme; users can toggle and it is saved.
+        const theme = stored ?? "light";
         const root = document.firstElementChild;
         root?.setAttribute("data-theme", theme);
         root?.classList.toggle("dark", theme === "dark");

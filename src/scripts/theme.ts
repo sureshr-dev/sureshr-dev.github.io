@@ -5,8 +5,8 @@ const DARK = "dark";
 function getPreferredTheme(): string {
   const stored = localStorage.getItem(THEME_KEY);
   if (stored) return stored;
-  // Default to dark mode when the user has not chosen a theme.
-  return DARK;
+  // Default to the light "paper" theme when the user has not chosen one.
+  return LIGHT;
 }
 
 // Reuse the value already set by the inline FOUC-prevention script if available.
