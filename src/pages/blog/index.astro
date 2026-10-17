@@ -90,6 +90,9 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
+				{posts.length === 0 && (
+					<p>No posts yet — check back soon. I'm busy writing the first one.</p>
+				)}
 				<ul>
 					{posts.map((post) => (
 						<li>
