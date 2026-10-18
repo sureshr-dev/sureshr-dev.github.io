@@ -137,7 +137,7 @@ A CPU and a GPU are built on opposite philosophies, and the easiest way to feel 
       </div>
     </div>
   </div>
-  <figcaption>Each square is one pixel getting the sepia recipe. Same photo, same total work — the GPU's many cores finish it all together while the CPU's single core is still ticking through one pixel at a time.</figcaption>
+  <figcaption>Each square is a piece of the same photo getting the sepia recipe. Same picture, same total work — the GPU's many cores reveal it all together while the CPU's single core is still ticking through one piece at a time.</figcaption>
 </figure>
 
 <style>
@@ -210,14 +210,35 @@ A CPU and a GPU are built on opposite philosophies, and the easiest way to feel 
   .chip-demo__grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 5px;
+    gap: 3px;
+    background-image: url("/images/sepia-demo.jpg");
+    background-size: cover;
+    background-position: center;
+    border-radius: 6px;
+    overflow: hidden;
   }
+  /* Each cell shows its own piece of the photo. Cells start greyed/dim
+     ("not processed yet") and the animation reveals them in warm sepia. */
   .chip-demo__grid span {
-    --cell: color-mix(in srgb, var(--foreground) 12%, transparent);
     aspect-ratio: 1 / 1;
-    border-radius: 4px;
-    background: var(--cell);
+    background-image: url("/images/sepia-demo.jpg");
+    background-size: 600% 600%;
+    opacity: 0.25;
+    filter: grayscale(1) brightness(0.9);
   }
+  /* 6x6 positions so the 36 cells tile the whole image. */
+  .chip-demo__grid span:nth-child(6n+1) { background-position-x: 0%; }
+  .chip-demo__grid span:nth-child(6n+2) { background-position-x: 20%; }
+  .chip-demo__grid span:nth-child(6n+3) { background-position-x: 40%; }
+  .chip-demo__grid span:nth-child(6n+4) { background-position-x: 60%; }
+  .chip-demo__grid span:nth-child(6n+5) { background-position-x: 80%; }
+  .chip-demo__grid span:nth-child(6n)   { background-position-x: 100%; }
+  .chip-demo__grid span:nth-child(-n+6)                  { background-position-y: 0%; }
+  .chip-demo__grid span:nth-child(n+7):nth-child(-n+12)  { background-position-y: 20%; }
+  .chip-demo__grid span:nth-child(n+13):nth-child(-n+18) { background-position-y: 40%; }
+  .chip-demo__grid span:nth-child(n+19):nth-child(-n+24) { background-position-y: 60%; }
+  .chip-demo__grid span:nth-child(n+25):nth-child(-n+30) { background-position-y: 80%; }
+  .chip-demo__grid span:nth-child(n+31):nth-child(-n+36) { background-position-y: 100%; }
 
   /*
     One full loop is 6s.
@@ -268,49 +289,50 @@ A CPU and a GPU are built on opposite philosophies, and the easiest way to feel 
   .chip-demo__grid--cpu span:nth-child(35) { animation-name: cpu-c35; }
   .chip-demo__grid--cpu span:nth-child(36) { animation-name: cpu-c36; }
 
-  /* fills over the first ~90% of the loop; everything clears at 98% so the
-     grid is blank at 100% / 0% of the next loop. */
-  @keyframes cpu-c1  { 0%,2.3%{background:var(--cell)} 2.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c2  { 0%,4.8%{background:var(--cell)} 5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c3  { 0%,7.3%{background:var(--cell)} 7.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c4  { 0%,9.8%{background:var(--cell)} 10%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c5  { 0%,12.3%{background:var(--cell)} 12.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c6  { 0%,14.8%{background:var(--cell)} 15%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c7  { 0%,17.3%{background:var(--cell)} 17.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c8  { 0%,19.8%{background:var(--cell)} 20%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c9  { 0%,22.3%{background:var(--cell)} 22.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c10 { 0%,24.8%{background:var(--cell)} 25%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c11 { 0%,27.3%{background:var(--cell)} 27.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c12 { 0%,29.8%{background:var(--cell)} 30%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c13 { 0%,32.3%{background:var(--cell)} 32.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c14 { 0%,34.8%{background:var(--cell)} 35%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c15 { 0%,37.3%{background:var(--cell)} 37.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c16 { 0%,39.8%{background:var(--cell)} 40%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c17 { 0%,42.3%{background:var(--cell)} 42.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c18 { 0%,44.8%{background:var(--cell)} 45%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c19 { 0%,47.3%{background:var(--cell)} 47.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c20 { 0%,49.8%{background:var(--cell)} 50%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c21 { 0%,52.3%{background:var(--cell)} 52.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c22 { 0%,54.8%{background:var(--cell)} 55%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c23 { 0%,57.3%{background:var(--cell)} 57.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c24 { 0%,59.8%{background:var(--cell)} 60%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c25 { 0%,62.3%{background:var(--cell)} 62.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c26 { 0%,64.8%{background:var(--cell)} 65%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c27 { 0%,67.3%{background:var(--cell)} 67.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c28 { 0%,69.8%{background:var(--cell)} 70%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c29 { 0%,72.3%{background:var(--cell)} 72.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c30 { 0%,74.8%{background:var(--cell)} 75%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c31 { 0%,77.3%{background:var(--cell)} 77.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c32 { 0%,79.8%{background:var(--cell)} 80%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c33 { 0%,82.3%{background:var(--cell)} 82.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c34 { 0%,84.8%{background:var(--cell)} 85%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c35 { 0%,87.3%{background:var(--cell)} 87.5%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
-  @keyframes cpu-c36 { 0%,89.8%{background:var(--cell)} 90%,97%{background:var(--accent)} 98%,100%{background:var(--cell)} }
+  /* Each cell reveals its photo tile (grey+dim -> warm sepia) at its moment,
+     holds, then all reset together at 98% so the next loop starts fully grey. */
+  @keyframes cpu-c1 { 0%,0.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 0.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c2 { 0%,0.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 0.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c3 { 0%,5.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 5.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c4 { 0%,5.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 5.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c5 { 0%,10.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 10.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c6 { 0%,10.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 10.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c7 { 0%,15.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 15.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c8 { 0%,15.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 15.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c9 { 0%,20.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 20.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c10 { 0%,20.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 20.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c11 { 0%,25.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 25.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c12 { 0%,25.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 25.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c13 { 0%,30.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 30.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c14 { 0%,30.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 30.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c15 { 0%,35.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 35.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c16 { 0%,35.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 35.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c17 { 0%,40.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 40.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c18 { 0%,40.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 40.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c19 { 0%,45.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 45.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c20 { 0%,45.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 45.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c21 { 0%,50.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 50.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c22 { 0%,50.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 50.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c23 { 0%,55.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 55.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c24 { 0%,55.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 55.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c25 { 0%,60.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 60.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c26 { 0%,60.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 60.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c27 { 0%,65.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 65.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c28 { 0%,65.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 65.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c29 { 0%,70.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 70.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c30 { 0%,70.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 70.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c31 { 0%,75.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 75.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c32 { 0%,75.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 75.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c33 { 0%,80.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 80.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c34 { 0%,80.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 80.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c35 { 0%,85.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 85.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
+  @keyframes cpu-c36 { 0%,85.0%{opacity:.25;filter:grayscale(1) brightness(.9)} 85.3%,97%{opacity:1;filter:sepia(.75) saturate(1.3) contrast(1.02)} 98%,100%{opacity:.25;filter:grayscale(1) brightness(.9)} }
 
+  /* GPU: every tile reveals together, very early, holds, resets at 98%. */
   @keyframes chip-gpu-fill {
-    0%, 5%    { background: var(--cell); }
-    8%, 97%   { background: var(--accent); }
-    98%, 100% { background: var(--cell); }
+    0%, 4%    { opacity:.25; filter:grayscale(1) brightness(.9); }
+    7%, 97%   { opacity:1;   filter:sepia(.75) saturate(1.3) contrast(1.02); }
+    98%, 100% { opacity:.25; filter:grayscale(1) brightness(.9); }
   }
   @keyframes chip-gpu-core {
     0%, 5%    { background: color-mix(in srgb, var(--foreground) 20%, transparent); }
@@ -336,13 +358,13 @@ A CPU and a GPU are built on opposite philosophies, and the easiest way to feel 
     .chip-demo__grid span,
     .chip-demo__core,
     .chip-demo__badge { animation: none; }
-    .chip-demo__grid span { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+    .chip-demo__grid span { opacity: 1; filter: sepia(.75) saturate(1.3) contrast(1.02); }
     .chip-demo__core { background: var(--accent); }
     .chip-demo__badge--gpu { opacity: 1; }
   }
 </style>
 
-That's the core idea: a **CPU** has a few very fast cores, so it ticks through the pixels a small group at a time. A **GPU** has thousands of simpler cores, so it colors the whole batch at once and is done while the CPU is still going. For work this repetitive and independent, "many simple hands all at once" wins easily.
+That's the core idea: a **CPU** has a few very fast cores, so it works through the photo a small patch at a time. A **GPU** has thousands of simpler cores, so it processes the whole image at once and is done while the CPU is still going. For work this repetitive and independent, "many simple hands all at once" wins easily.
 
 > Rendering a game is the same shape of problem: recomputing millions of pixels 60+ times a second. Do that on a weak CPU with no real GPU and it crawls (hello, college laptop). Do it on thousands of GPU cores in parallel and it's smooth.
 
